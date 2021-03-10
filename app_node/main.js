@@ -13,7 +13,7 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  win.loadURL('https://gtmadureira.github.io/bitcoin_address-generator/')
+  win.loadURL('https://gtmadureira.github.io/bitcoin_address-generator/app_web/')
 }
 
 // This method will be called when Electron has finished
