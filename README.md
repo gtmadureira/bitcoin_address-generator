@@ -1,5 +1,5 @@
 # Bitcoin address generator
-Available at https://gtmadureira.github.io/bitcoin_address-generator/
+Available at https://gtmadureira.github.io/bitcoin_address-generator/app_web/
 
 ## Features:
 *  Create bech32, segwit (p2sh-p2wpkh), and legacy (p2pkh) addresses
