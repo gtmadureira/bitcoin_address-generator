@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
 
-<head>  
+<head>
 <meta charset="utf-8">
-<title>Bitcoin Address Generator</title>
+<title>BITCOIN ADDRESS GENERATOR</title>
 
 <style>
 
@@ -14,7 +14,7 @@ body
 
 body.dark
 {
-    background: #2a2b30;
+    background: #121212;
     color: #e0e0e0;
 }
 
@@ -354,6 +354,10 @@ li
     
     <div id="content" style="display: table; width: 100%;">
         <div id="button_container" style="display: table-cell; padding-right: 10px; border-right: 2px solid #bbbbbb; width: 250px;">
+            <div style="text-align: center;"><img src="images/logo.png" alt="Bitcoin logo" width="50" height="50"></div>
+            <div style="font-size: 20px; font-weight: bold; text-align: center;">BITCOIN ADDRESS GENERATOR</div>
+            <br />
+            <br />
             <div id="testnet_text" style="display: none; font-size: 40px; font-weight: bold; text-align: center; color: #ff0000;"
                 title="The site is in testnet mode. Testnet addresses are used for testing, so testnet coins have no value.">TESTNET</div>
             <button id="button_layout_singleaddress" style="width: 250px;" onclick="set_layout('singleaddress')" disabled >Single address</button>
@@ -371,7 +375,7 @@ li
             <button id="button_layout_beginner" style="width: 250px; margin-top: 50px;" onclick="set_layout('beginner')">Beginner's guide</button>
             <br />
             <button id="button_layout_security" style="width: 250px;" onclick="set_layout('security')">Security tips</button>
-            <div id="warning_text" style="display: none; font-size: 21px; color: rgb(255, 123, 123); margin-top: 30px;">
+            <div id="warning_text" style="display: none; font-size: 21px; color: #ff0000; margin-top: 30px;">
                 Warning: it seems you're running this generator from a live website.
                 For valuable wallets, it is highly recommended to run the site from an offline computer.
                 You can save this website by pressing CTRL-S or right click -> Save website (or something)
@@ -794,7 +798,24 @@ li
             </svg>
         </a>
     </div>
-<script type="text/javascript">
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+    <script type="text/javascript">
 "use strict";
 var setImmediate;
 (function (global) {
@@ -10061,7 +10082,10 @@ var setImmediate;
 
         return CTRGladman;
     }());
-(function () {
+
+
+
+    (function () {
         // Shortcuts
         var C = CryptoJS;
         var C_lib = C.lib;
