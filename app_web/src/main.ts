@@ -3899,7 +3899,7 @@
     {
         seedExtendedKeysVisible = !seedExtendedKeysVisible;
         document.getElementById("seed_details_results_extended_keys")!.style.display = seedExtendedKeysVisible ? "" : "none";
-        button.textContent = seedExtendedKeysVisible ? "Hide extended keys" : "Show extended keys";
+        button.textContent = seedExtendedKeysVisible ? "Hide Extended Keys" : "Show Extended Keys";
     }
 
     const layoutPrintAreas: { [key: string]: { [key: string]: string } } = {
