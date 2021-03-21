@@ -14,7 +14,7 @@ body
 
 body.dark
 {
-    background: #121212;
+    background: #282529;
     color: #e0e0e0;
 }
 
@@ -725,8 +725,8 @@ li
                 <li>JavaScript libraries used on this site: <a href="https://github.com/indutny/bn.js">BigNumber</a>, <a href="https://github.com/brix/crypto-js">crypto-js</a>, <a href="https://github.com/kazuhikoarase/qrcode-generator">QR code generator</a>, <a href="https://github.com/dchest/scrypt-async-js">Scrypt</a>, <a href="https://github.com/YuzuJS/setImmediate">setImmediate.js</a>.</li>
                 <li>Source code is available at <a href="https://github.com/gtmadureira/bitcoin_address-generator">GitHub</a> or by viewing this page's source (it is a single html file).</li>
                 <li id="run_tests_link"><p class="linkStyle" onclick="runTests()">Click here</p> to run tests.</li>
-                <li>This web page was made by <a href="https://github.com/gtmadureira">Gustavo Madureira</a>.</li>
-                <li>Did you like this web page?
+                <li>This APP was made by <a href="https://github.com/gtmadureira">Gustavo Madureira</a>.</li>
+                <li>Did you like this APP?
                     <br>
 
 
@@ -13521,11 +13521,11 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             }
             if (typeof result2 === "number")
                 return;
-            document.getElementById("view_address_information").innerHTML = "Details for encrypted private key: <strong>" +
-                privkey + "</strong><br /><br />Decrypted private key: <strong>" + result.privkey + "</strong>";
-            document.getElementById("view_address_segwitaddress").textContent = "Segwit address: " + result2.segwitAddress;
-            document.getElementById("view_address_bech32address").textContent = "Segwit (bech32) address: " + result2.bech32Address;
-            document.getElementById("view_address_legacyaddress").textContent = "Legacy address: " + result2.legacyAddress;
+            document.getElementById("view_address_information").innerHTML = "Details for Encrypted Private Key: <strong>" +
+                privkey + "</strong><br /><br />Decrypted Private Key: <strong>" + result.privkey + "</strong>";
+            document.getElementById("view_address_segwitaddress").textContent = "Segwit Address: " + result2.segwitAddress;
+            document.getElementById("view_address_bech32address").textContent = "Native Segwit(Bech32) Address: " + result2.bech32Address;
+            document.getElementById("view_address_legacyaddress").textContent = "Legacy Address: " + result2.legacyAddress;
             var segwitQR = qrcode(0, qrErrorCorrectionLevel);
             segwitQR.addData(result2.segwitAddress);
             segwitQR.make();
@@ -14052,10 +14052,10 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             document.getElementById("view_address_container").style.display = "none";
             return;
         }
-        document.getElementById("view_address_information").innerHTML = "Details for private key: <strong>" + privkey + "</strong>";
-        document.getElementById("view_address_segwitaddress").textContent = "Segwit address: " + result.segwitAddress;
-        document.getElementById("view_address_bech32address").textContent = "Segwit (bech32) address: " + result.bech32Address;
-        document.getElementById("view_address_legacyaddress").textContent = "Legacy address: " + result.legacyAddress;
+        document.getElementById("view_address_information").innerHTML = "Details for Private Key: <strong>" + privkey + "</strong>";
+        document.getElementById("view_address_segwitaddress").textContent = "Segwit Address: " + result.segwitAddress;
+        document.getElementById("view_address_bech32address").textContent = "Native Segwit(Bech32) Address: " + result.bech32Address;
+        document.getElementById("view_address_legacyaddress").textContent = "Legacy Address: " + result.legacyAddress;
         var segwitQR = qrcode(0, qrErrorCorrectionLevel);
         segwitQR.addData(result.segwitAddress);
         segwitQR.make();
