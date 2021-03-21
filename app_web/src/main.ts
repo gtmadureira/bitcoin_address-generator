@@ -600,14 +600,14 @@
             if (typeof result2 === "number")
                 return;
 
-            document.getElementById("view_address_information")!.innerHTML = "Details for encrypted private key: <strong>" +
+            document.getElementById("view_address_information")!.innerHTML = "Details for Encrypted Private Key: <strong>" +
                 privkey + "</strong><br /><br />Decrypted private key: <strong>" + result.privkey + "</strong>";
 
-            document.getElementById("view_address_segwitaddress")!.textContent = "Segwit address: " + result2.segwitAddress;
-            document.getElementById("view_address_bech32address")!.textContent = "Segwit (bech32) address: " + result2.bech32Address;
-            document.getElementById("view_address_legacyaddress")!.textContent = "Legacy address: " + result2.legacyAddress;
+            document.getElementById("view_address_segwitaddress")!.textContent = "Segwit Address: " + result2.segwitAddress;
+            document.getElementById("view_address_bech32address")!.textContent = "Native Segwit(Bech32) Address: " + result2.bech32Address;
+            document.getElementById("view_address_legacyaddress")!.textContent = "Legacy Address: " + result2.legacyAddress;
 
-            const segwitQR = qrcode(0, qrErrorCorrectionLevel);
+            const segwitQR = qrcode(0, qrErrorCorrectionLevel
             segwitQR.addData(result2.segwitAddress);
             segwitQR.make();
             document.getElementById("view_address_segwitaddress_qr")!.innerHTML = segwitQR.createImgTag(4, 8);
@@ -1345,10 +1345,10 @@
             return;
         }
 
-        document.getElementById("view_address_information")!.innerHTML = "Details for private key: <strong>" + privkey + "</strong>";
-        document.getElementById("view_address_segwitaddress")!.textContent = "Segwit address: " + result.segwitAddress;
-        document.getElementById("view_address_bech32address")!.textContent = "Segwit (bech32) address: " + result.bech32Address;
-        document.getElementById("view_address_legacyaddress")!.textContent = "Legacy address: " + result.legacyAddress;
+        document.getElementById("view_address_information")!.innerHTML = "Details for Private Key: <strong>" + privkey + "</strong>";
+        document.getElementById("view_address_segwitaddress")!.textContent = "Segwit Address: " + result.segwitAddress;
+        document.getElementById("view_address_bech32address")!.textContent = "Native Segwit(Bech32) Address: " + result.bech32Address;
+        document.getElementById("view_address_legacyaddress")!.textContent = "Legacy Address: " + result.legacyAddress;
 
         const segwitQR = qrcode(0, qrErrorCorrectionLevel);
         segwitQR.addData(result.segwitAddress);
