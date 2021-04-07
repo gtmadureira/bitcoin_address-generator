@@ -1,6 +1,6 @@
 var CryptoJS = require('cryptojs').Crypto
 
-// Passo 1: Criar uma variavel  com 32 bytes ramdomicos.
+// Step 1 - create a variable with 32 random bytes.
 
 var privateKey = CryptoJS.util.randomBytes(32)
 
