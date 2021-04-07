@@ -603,8 +603,8 @@
             document.getElementById("view_address_information")!.innerHTML = "Details for Encrypted Private Key: <strong>" +
                 privkey + "</strong><br /><br />Decrypted private key: <strong>" + result.privkey + "</strong>";
 
-            document.getElementById("view_address_segwitaddress")!.textContent = "Segwit Address: " + result2.segwitAddress;
-            document.getElementById("view_address_bech32address")!.textContent = "Native Segwit(Bech32) Address: " + result2.bech32Address;
+            document.getElementById("view_address_segwitaddress")!.textContent = "SegWit Address: " + result2.segwitAddress;
+            document.getElementById("view_address_bech32address")!.textContent = "Native SegWit(Bech32) Address: " + result2.bech32Address;
             document.getElementById("view_address_legacyaddress")!.textContent = "Legacy Address: " + result2.legacyAddress;
 
             const segwitQR = qrcode(0, qrErrorCorrectionLevel
@@ -1165,11 +1165,11 @@
         switch (type)
         {
             case "segwit":
-                return_address_type = "Segwit address:";
+                return_address_type = "SegWit address:";
                 address = makeSegwitAddress(keypair);
                 break;
             case "bech32":
-                return_address_type = "Segwit (bech32) address:";
+                return_address_type = "SegWit (bech32) address:";
                 address = makeBech32Address(keypair);
                 break;
             case "legacy":
@@ -1346,8 +1346,8 @@
         }
 
         document.getElementById("view_address_information")!.innerHTML = "Details for Private Key: <strong>" + privkey + "</strong>";
-        document.getElementById("view_address_segwitaddress")!.textContent = "Segwit Address: " + result.segwitAddress;
-        document.getElementById("view_address_bech32address")!.textContent = "Native Segwit(Bech32) Address: " + result.bech32Address;
+        document.getElementById("view_address_segwitaddress")!.textContent = "SegWit Address: " + result.segwitAddress;
+        document.getElementById("view_address_bech32address")!.textContent = "Native SegWit(Bech32) Address: " + result.bech32Address;
         document.getElementById("view_address_legacyaddress")!.textContent = "Legacy Address: " + result.legacyAddress;
 
         const segwitQR = qrcode(0, qrErrorCorrectionLevel);
@@ -4233,13 +4233,13 @@
                         assert(false, `Address generation error for privkey "${testCase.privKeyString}": ${addresses}`);
                     else
                     {
-                        assertEqual(addresses.segwitAddress, testCase.addresses.segwitAddress, "Segwit address generated from private key string does not match");
-                        assertEqual(addresses.bech32Address, testCase.addresses.bech32Address, "Bech32 address generated from private key string does not match");
+                        assertEqual(addresses.segwitAddress, testCase.addresses.segwitAddress, "SegWit address generated from private key string does not match");
+                        assertEqual(addresses.bech32Address, testCase.addresses.bech32Address, "SegWit(Bech32) address generated from private key string does not match");
                         assertEqual(addresses.legacyAddress, testCase.addresses.legacyAddress, "Legacy address generated from private key string does not match");
                     }
 
-                    assertEqual(segwitAddress, testCase.addresses.segwitAddress, "Segwit address generated from private bigint value does not match");
-                    assertEqual(bech32Address, testCase.addresses.bech32Address, "Bech32 address generated from private bigint value does not match");
+                    assertEqual(segwitAddress, testCase.addresses.segwitAddress, "SegWit address generated from private bigint value does not match");
+                    assertEqual(bech32Address, testCase.addresses.bech32Address, "SegWit(Bech32) address generated from private bigint value does not match");
                     assertEqual(legacyAddress, testCase.addresses.legacyAddress, "Legacy address generated from private bigint value does not match");
                 }
                 catch (e)
@@ -4343,8 +4343,8 @@
                                 assert(false, `Address generation error for privkey "${testCase.decryptedPrivKey}": ${addresses}`);
                             else
                             {
-                                assertEqual(addresses.segwitAddress, testCase.addresses.segwitAddress, "Decrypted segwit address does not match");
-                                assertEqual(addresses.bech32Address, testCase.addresses.bech32Address, "Decrypted bech32 address does not match");
+                                assertEqual(addresses.segwitAddress, testCase.addresses.segwitAddress, "Decrypted SegWit address does not match");
+                                assertEqual(addresses.bech32Address, testCase.addresses.bech32Address, "Decrypted SegWit(bech32) address does not match");
                                 assertEqual(addresses.legacyAddress, testCase.addresses.legacyAddress, "Decrypted legacy address does not match");
                             }
                         }
