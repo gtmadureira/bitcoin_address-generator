@@ -390,17 +390,17 @@ li
                 <div style="padding-left: 10px;">
                     <div style="font-weight: bold; font-size: 20px; padding-bottom: 10px;">Address type:</div>
                     <form>
-                        <label style="white-space: nowrap;"><input type="radio" name="address_type" onchange="setAddressType('segwit')">Segwit</label>
-                        <label style="white-space: nowrap;"><input type="radio" name="address_type" onchange="setAddressType('bech32')" checked>Native Segwit(Bech32)</label>
-                        <label style="white-space: nowrap;"><input type="radio" name="address_type" onchange="setAddressType('legacy')">Legacy</label>
+                        <label style="white-space: nowrap; font-size: 15px;"><input type="radio" name="address_type" onchange="setAddressType('segwit')">SegWit</label>
+                        <label style="white-space: nowrap; font-size: 15px;"><input type="radio" name="address_type" onchange="setAddressType('bech32')" checked>Native SegWit(Bech32)</label>
+                        <label style="white-space: nowrap; font-size: 15px;"><input type="radio" name="address_type" onchange="setAddressType('legacy')">Legacy</label>
                     </form>
                     
                     <div style="font-weight: bold; font-size: 20px; padding-bottom: 10px; margin-top: 20px;">QR code error correction level:</div>
                     <form>
-                        <label style="white-space: nowrap;"><input id="singleaddress_radio_qr_errorcorrectionlevel_h" type="radio" name="qr_error_correction_level" onchange="setQRErrorCorrectionLevel('H')" checked>High</label>
-                        <label style="white-space: nowrap;"><input id="singleaddress_radio_qr_errorcorrectionlevel_q" type="radio" name="qr_error_correction_level" onchange="setQRErrorCorrectionLevel('Q')">Quartile</label>
-                        <label style="white-space: nowrap;"><input id="singleaddress_radio_qr_errorcorrectionlevel_m" type="radio" name="qr_error_correction_level" onchange="setQRErrorCorrectionLevel('M')">Medium</label>
-                        <label style="white-space: nowrap;"><input id="singleaddress_radio_qr_errorcorrectionlevel_l" type="radio" name="qr_error_correction_level" onchange="setQRErrorCorrectionLevel('L')">Low</label>
+                        <label style="white-space: nowrap; font-size: 15px;"><input id="singleaddress_radio_qr_errorcorrectionlevel_h" type="radio" name="qr_error_correction_level" onchange="setQRErrorCorrectionLevel('H')" checked>High</label>
+                        <label style="white-space: nowrap; font-size: 15px;"><input id="singleaddress_radio_qr_errorcorrectionlevel_q" type="radio" name="qr_error_correction_level" onchange="setQRErrorCorrectionLevel('Q')">Quartile</label>
+                        <label style="white-space: nowrap; font-size: 15px;"><input id="singleaddress_radio_qr_errorcorrectionlevel_m" type="radio" name="qr_error_correction_level" onchange="setQRErrorCorrectionLevel('M')">Medium</label>
+                        <label style="white-space: nowrap; font-size: 15px;"><input id="singleaddress_radio_qr_errorcorrectionlevel_l" type="radio" name="qr_error_correction_level" onchange="setQRErrorCorrectionLevel('L')">Low</label>
                     </form>
                     
                     <button type="button" onclick="generate_address()" style="width: 290px; margin-top: 50px; margin-right: 50px;">Generate New Address</button>
@@ -465,8 +465,8 @@ li
                 <div style="padding-left: 10px;">
                     <div style="font-weight: bold; font-size: 20px; padding-bottom: 10px;">Address type:</div>
                     <form>
-                        <label style="white-space: nowrap;"><input id="bulk_radio_type_segwit" type="radio" name="address_type" onchange="setBulkAddressType('segwit')">Segwit</label>
-                        <label style="white-space: nowrap;"><input id="bulk_radio_type_bech32" type="radio" name="address_type" onchange="setBulkAddressType('bech32')" checked>Native Segwit(Bech32)</label>
+                        <label style="white-space: nowrap;"><input id="bulk_radio_type_segwit" type="radio" name="address_type" onchange="setBulkAddressType('segwit')">SegWit</label>
+                        <label style="white-space: nowrap;"><input id="bulk_radio_type_bech32" type="radio" name="address_type" onchange="setBulkAddressType('bech32')" checked>Native SegWit(Bech32)</label>
                         <label style="white-space: nowrap;"><input id="bulk_radio_type_legacy" type="radio" name="address_type" onchange="setBulkAddressType('legacy')">Legacy</label>
                     </form>
                     <br />
@@ -494,8 +494,8 @@ li
                 <div style="padding-bottom: 10px; padding-right: 10px; width: 500px;">
                     <div style="font-weight: bold; font-size: 20px; padding-bottom: 10px;">Address type:</div>
                     <form>
-                        <label style="white-space: nowrap;"><input id="paper_radio_type_segwit" type="radio" name="address_type" onchange="setPaperAddressType('segwit')">Segwit</label>
-                        <label style="white-space: nowrap;"><input id="paper_radio_type_bech32" type="radio" name="address_type" onchange="setPaperAddressType('bech32')" checked>Native Segwit(Bech32)</label>
+                        <label style="white-space: nowrap;"><input id="paper_radio_type_segwit" type="radio" name="address_type" onchange="setPaperAddressType('segwit')">SegWit</label>
+                        <label style="white-space: nowrap;"><input id="paper_radio_type_bech32" type="radio" name="address_type" onchange="setPaperAddressType('bech32')" checked>Native SegWit(Bech32)</label>
                         <label style="white-space: nowrap;"><input id="paper_radio_type_legacy" type="radio" name="address_type" onchange="setPaperAddressType('legacy')">Legacy</label>
                     </form>
                     <div style="font-weight: bold; font-size: 20px; padding-bottom: 10px; margin-top: 20px;">QR code error correction level:</div>
@@ -662,15 +662,15 @@ li
                         <div style="margin: 10px 0px; font-size: 24px; display: inline-block;">Preset:</div>
                         <select id="derivation_path_preset" style="font-size: 21px; margin-right: 20px; padding: 2px 4px;" onchange="SeedDerivationPresetChanged(this.value)">
                             <option value="44">Legacy</option>
-                            <option value="49" selected="">Segwit</option>
-                            <option value="84">Segwit(Bech32)</option>
+                            <option value="49" selected="">SegWit</option>
+                            <option value="84">SegWit(Bech32)</option>
                             <option value="32">Custom</option>
                         </select>
                         <div style="margin: 20px 0px 10px 0px; font-size: 24px; display: inline-block;">Derivation path:</div>
                         <input type="text" id="seed_details_results_derivation_path_input" value="m/49'/0'/0'" placeholder="e.g. m/0'/0" disabled
                             style="font-size: 24px; margin-right: 20px; width: 200px; padding: 2px 4px;">
-                        <div style="margin: 20px 0px 10px 0px; font-size: 24px; display: inline-block;">Count:</div>
-                        <input id="seed_details_address_count" type="number" value="10" min="1" max="100" step="1" style="font-size: 24px; margin-right: 20px; width: 60px; padding: 2px 4px;">
+                        <div style="margin: 20px 0px 10px 0px; font-size: 22px; display: inline-block;">Count:</div>
+                        <input id="seed_details_address_count" type="number" value="10" min="1" max="100" step="1" style="font-size: 18px; margin-right: 20px; width: 60px; padding: 2px 4px;">
                         <div style="margin: 20px 0px 10px 0px; font-size: 24px; display: inline-block;">Offset:</div>
                         <input id="seed_details_address_offset" type="number" value="0" min="0" max="2147483648" step="1" style="font-size: 24px; margin-right: 20px; width: 160px; padding: 2px 4px;">
                         <div style="margin-top: 10px;">
@@ -718,7 +718,7 @@ li
         <div id="main_info" style="display: none; width: 80%; padding-left: 10px;">
             <div class="title">Information</div>
             <ul>
-                <li>P2SH-P2WPKH addresses are referenced as "Segwit" addresses, Bech32-encoded P2WPKH addresses are referenced as "Native Segwit(Bech32)" addresses, and regular P2PKH addresses are referenced as "Legacy" addresses.</li>
+                <li>P2SH-P2WPKH addresses are referenced as "SegWit" addresses, Bech32-encoded P2WPKH addresses are referenced as "Native SegWit(Bech32)" addresses, and regular P2PKH addresses are referenced as "Legacy" addresses.</li>
                 <li>QR codes of Bech32 addresses contain the text capitalized, so the size of the QR codes can be reduced. For more information, see the <a href="https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#Specification">BIP 173 specification (Uppercase/lowercase part)</a>.</li>
                 <li id="testnet_link_li">Testnet version available <a href="?testnet">here.</a></li>
                 <li id="mainnet_link_li" style="display: none;">Mainnet version available <a href="?">here.</a></li>
@@ -732,11 +732,11 @@ li
 
                     <table>
                         <tr>
-                            <td style="text-align:right">Donate to Native Segwit(Bech32):</td>
+                            <td style="text-align:right">Donate to Native SegWit(Bech32):</td>
                             <td><a href="bitcoin:BC1QN9DPXCE3Y82MLQYPHUDQG3X56AZ77PLQ5L8YCF?label=Default%20Address%20of%20Gustavo%20Madureira%20%28gtmadureira%40gmail.com%29&message=Live%20Long%20and%20Prosper%20%5Co%2F">bc1qn9dpxce3y82mlqyphudqg3x56az77plq5l8ycf</a></td>
                         </tr>
                         <tr>
-                            <td style="text-align:right">Segwit:</td>
+                            <td style="text-align:right">SegWit:</td>
                             <td><a href="bitcoin:3Eo6bvcnKPZs4Rk5h69XpzgGBLUSvRxq5c?label=%5B%20Legacy%20%3C--%20to_or_from%20--%3E%20Bech32%20%5D%20Compatibility%20Address%20of%20Gustavo%20Madureira%20%28gtmadureira%40gmail.com%29&message=Live%20Long%20and%20Prosper%20%5Co%2F">3Eo6bvcnKPZs4Rk5h69XpzgGBLUSvRxq5c</a></td>
                         </tr>
                     </table>                 
@@ -755,8 +755,8 @@ li
             <div class="title-small">What is a paper wallet?</div>
             <div>A paper wallet is a bitcoin address and the private key printed to paper. Paper wallets are a safe way to store bitcoin, as they are offline, so they cannot be stolen by hackers. However, you should be careful when making paper wallets, so no one can actually steal them. You can read more at the "Security tips" section on this site.</div>
             <br />
-            <div class="title-small">What is a legacy address, and what is a segwit address (and bech32 segwit address)?</div>
-            <div>Legacy address is the default bitcoin address format, they start with the character 1. Segwit addresses use the "<a href="https://en.bitcoin.it/wiki/Segregated_Witness">segregated witness</a>" feature, allowing users to send transactions for a lower fee. It is recommended to use segwit addresses over legacy addresses. Segwit addresses start with the character 3. Bech32 is a new address format for native segwit addresses, but they are not widely supported yet.</div>
+            <div class="title-small">What is a legacy address, and what is a SegWit address (and bech32 SegWit address)?</div>
+            <div>Legacy address is the default bitcoin address format, they start with the character 1. SegWit addresses use the "<a href="https://en.bitcoin.it/wiki/Segregated_Witness">segregated witness</a>" feature, allowing users to send transactions for a lower fee. It is recommended to use SegWit addresses over legacy addresses. SegWit addresses start with the character 3. Bech32 is a new address format for native SegWit addresses, but they are not widely supported yet.</div>
             <br />
             <div class="title-small">What is Bip38 encryption?</div>
             <div><a href="https://github.com/bitcoin/bips/blob/master/bip-0038.mediawiki">Bip38</a> encryption allows you to protect your paper wallet with a password, so if your paper wallet is stolen, or its private key is exposed, your paper wallet will still be safe. However, if you use bip38 encryption, you must remember the password very well, because if you forget the password, the paper wallet will be as worthless as if you lost the private key. Bip38 was designed to resist brute-force attacks, that's why it's practically impossible to recover the wallet if the password is forgotten. You can unlock a bip38 encrypted wallet on the "Address details" section of this site.</div>
@@ -775,7 +775,7 @@ li
         </div>
     </div>
     <div id="bip38_info">
-        <div id="bip38_info_content">Bip38 encryption allows you to protect your paper wallet with a password, giving it more security.<br />If your paper wallet is stolen or the private key is exposed, your funds will still be safe, because it cannot be unlocked without the password.<br /><br /><div style="color: #ff0000;">However, if you forget the password, there is absolutely no way to recover the wallet, this means that your funds will be PERMANENTLY LOST.<br />Always make sure that you can decrypt the wallet before sending any bitcoins to it!</div><br /><div style="margin-bottom: 70px;">Note that other applications may only support decryption of legacy addresses. To decrypt segwit addresses, you most likely need to use this site. Alternatively, you could decrypt the private key elsewhere, then generate the segwit address corresponding to that private key.</div><button style="position: absolute; width: 300px; right: 0px; bottom: 0px; margin: 30px;" onclick="document.getElementById('bip38_info').style.display='none'">Got it</button></div>
+        <div id="bip38_info_content">Bip38 encryption allows you to protect your paper wallet with a password, giving it more security.<br />If your paper wallet is stolen or the private key is exposed, your funds will still be safe, because it cannot be unlocked without the password.<br /><br /><div style="color: #ff0000;">However, if you forget the password, there is absolutely no way to recover the wallet, this means that your funds will be PERMANENTLY LOST.<br />Always make sure that you can decrypt the wallet before sending any bitcoins to it!</div><br /><div style="margin-bottom: 70px;">Note that other applications may only support decryption of legacy addresses. To decrypt SegWit addresses, you most likely need to use this site. Alternatively, you could decrypt the private key elsewhere, then generate the SegWit address corresponding to that private key.</div><button style="position: absolute; width: 300px; right: 0px; bottom: 0px; margin: 30px;" onclick="document.getElementById('bip38_info').style.display='none'">Got it</button></div>
     </div>
     <div id="randomness_overlay">
         <div id="randomness_overlay2" style="display: none; position: absolute; width: 100%; height: 100%;">
@@ -13523,8 +13523,8 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
                 return;
             document.getElementById("view_address_information").innerHTML = "Details for Encrypted Private Key: <strong>" +
                 privkey + "</strong><br /><br />Decrypted Private Key: <strong>" + result.privkey + "</strong>";
-            document.getElementById("view_address_segwitaddress").textContent = "Segwit Address: " + result2.segwitAddress;
-            document.getElementById("view_address_bech32address").textContent = "Native Segwit(Bech32) Address: " + result2.bech32Address;
+            document.getElementById("view_address_segwitaddress").textContent = "SegWit Address: " + result2.segwitAddress;
+            document.getElementById("view_address_bech32address").textContent = "Native SegWit(Bech32) Address: " + result2.bech32Address;
             document.getElementById("view_address_legacyaddress").textContent = "Legacy Address: " + result2.legacyAddress;
             var segwitQR = qrcode(0, qrErrorCorrectionLevel);
             segwitQR.addData(result2.segwitAddress);
@@ -13923,11 +13923,11 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
         var return_address_type;
         switch (type) {
             case "segwit":
-                return_address_type = "Segwit address:";
+                return_address_type = "SegWit address:";
                 address = makeSegwitAddress(keypair);
                 break;
             case "bech32":
-                return_address_type = "Segwit (bech32) address:";
+                return_address_type = "SegWit (bech32) address:";
                 address = makeBech32Address(keypair);
                 break;
             case "legacy":
@@ -14053,8 +14053,8 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             return;
         }
         document.getElementById("view_address_information").innerHTML = "Details for Private Key: <strong>" + privkey + "</strong>";
-        document.getElementById("view_address_segwitaddress").textContent = "Segwit Address: " + result.segwitAddress;
-        document.getElementById("view_address_bech32address").textContent = "Native Segwit(Bech32) Address: " + result.bech32Address;
+        document.getElementById("view_address_segwitaddress").textContent = "SegWit Address: " + result.segwitAddress;
+        document.getElementById("view_address_bech32address").textContent = "Native SegWit(Bech32) Address: " + result.bech32Address;
         document.getElementById("view_address_legacyaddress").textContent = "Legacy Address: " + result.legacyAddress;
         var segwitQR = qrcode(0, qrErrorCorrectionLevel);
         segwitQR.addData(result.segwitAddress);
@@ -16345,12 +16345,12 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
                     if (typeof addresses !== "object")
                         assert(false, "Address generation error for privkey \"" + testCase.privKeyString + "\": " + addresses);
                     else {
-                        assertEqual(addresses.segwitAddress, testCase.addresses.segwitAddress, "Segwit address generated from private key string does not match");
-                        assertEqual(addresses.bech32Address, testCase.addresses.bech32Address, "Bech32 address generated from private key string does not match");
+                        assertEqual(addresses.segwitAddress, testCase.addresses.segwitAddress, "SegWit address generated from private key string does not match");
+                        assertEqual(addresses.bech32Address, testCase.addresses.bech32Address, "SegWit(Bech32) address generated from private key string does not match");
                         assertEqual(addresses.legacyAddress, testCase.addresses.legacyAddress, "Legacy address generated from private key string does not match");
                     }
-                    assertEqual(segwitAddress, testCase.addresses.segwitAddress, "Segwit address generated from private bigint value does not match");
-                    assertEqual(bech32Address, testCase.addresses.bech32Address, "Bech32 address generated from private bigint value does not match");
+                    assertEqual(segwitAddress, testCase.addresses.segwitAddress, "SegWit address generated from private bigint value does not match");
+                    assertEqual(bech32Address, testCase.addresses.bech32Address, "SegWit(Bech32) address generated from private bigint value does not match");
                     assertEqual(legacyAddress, testCase.addresses.legacyAddress, "Legacy address generated from private bigint value does not match");
                 }
                 catch (e) {
@@ -16441,8 +16441,8 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
                             if (typeof addresses !== "object")
                                 assert(false, "Address generation error for privkey \"" + testCase.decryptedPrivKey + "\": " + addresses);
                             else {
-                                assertEqual(addresses.segwitAddress, testCase.addresses.segwitAddress, "Decrypted segwit address does not match");
-                                assertEqual(addresses.bech32Address, testCase.addresses.bech32Address, "Decrypted bech32 address does not match");
+                                assertEqual(addresses.segwitAddress, testCase.addresses.segwitAddress, "Decrypted SegWit address does not match");
+                                assertEqual(addresses.bech32Address, testCase.addresses.bech32Address, "Decrypted SegWit(bech32) address does not match");
                                 assertEqual(addresses.legacyAddress, testCase.addresses.legacyAddress, "Decrypted legacy address does not match");
                             }
                         }
