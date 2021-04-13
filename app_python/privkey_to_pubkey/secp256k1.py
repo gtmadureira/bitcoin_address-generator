@@ -1,5 +1,6 @@
 # Super simple Elliptic Curve Presentation.
-# For educational purposes only. Works in Python 3.
+# For educational purposes only.
+# Works on Python 3.6.13 or higher.
 # Source: https://github.com/gtmadureira/bitcoin_address-generator/blob/main/app_python/privkey_to_pubkey/secp256k1.py
 
 import random
