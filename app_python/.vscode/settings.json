@@ -1,9 +1,4 @@
 {
-    "gitdoc.enabled": false,
     "python.pythonPath": "venv/bin/python3",
-    "code-runner.ignoreSelection": true,
-    "code-runner.runInTerminal": true,
-    "code-runner.executorMap": {
-        "python": "venv/bin/python3"        
-    }
+    "cSpell.enabled": false
 }
