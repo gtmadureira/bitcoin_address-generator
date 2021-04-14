@@ -6,7 +6,6 @@ def passgen(length: int) -> str:
     """ Return a random password. """
 
     # Maximum length of password needed.
-    # This can be changed to suit your password length.
     MAX_LEN = length
 
     # Declare arrays of the character that we need in out password.
@@ -14,18 +13,18 @@ def passgen(length: int) -> str:
     DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
     LOCASE_CHARACTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
-          'i', 'j', 'k', 'm', 'n', 'o', 'p', 'q',
-          'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
-          'z']
+                        'i', 'j', 'k', 'm', 'n', 'o', 'p', 'q',
+                        'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
+                        'z']
 
     UPCASE_CHARACTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-          'I', 'J', 'K', 'M', 'N', 'O', 'p', 'Q',
-          'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
-          'Z']
+                        'I', 'J', 'K', 'M', 'N', 'O', 'p', 'Q',
+                        'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
+                        'Z']
 
     SYMBOLS = [' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*',
-               '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?',
-               '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~']
+                '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?',
+                '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~']
 
     # Combines all the character arrays above to form one array.
     COMBINED_LIST = DIGITS + UPCASE_CHARACTERS + LOCASE_CHARACTERS + SYMBOLS
@@ -36,9 +35,8 @@ def passgen(length: int) -> str:
     rand_lower = random.choice(LOCASE_CHARACTERS)
     rand_symbol = random.choice(SYMBOLS)
 
-    # Combine the character randomly selected above
-    # at this stage, the password contains only 4 characters but
-    # we want a 12-character password.
+    # Combine the character randomly selected above,
+    # at this stage, the password contains only 4 characters.
     temp_pass = rand_digit + rand_upper + rand_lower + rand_symbol
 
     # Now that we are sure we have at least one character from each
@@ -48,9 +46,9 @@ def passgen(length: int) -> str:
     for x in range(MAX_LEN - 4):
         temp_pass = temp_pass + random.choice(COMBINED_LIST)
 
-     # Convert temporary password into array and shuffle to
-     # prevent it from having a consistent pattern
-     # where the beginning of the password is predictable.
+    # Convert temporary password into array and shuffle to
+    # prevent it from having a consistent pattern
+    # where the beginning of the password is predictable.
         temp_pass_list = array.array('u', temp_pass)
         random.shuffle(temp_pass_list)
 
@@ -63,11 +61,10 @@ def passgen(length: int) -> str:
     return password
 
 
-def numgen(length: int) -> int:
+def numgen(length: int) -> str:
     """ Return a random password. """
 
     # Maximum length of password needed.
-    # This can be changed to suit your password length.
     MAX_LEN = length
 
     # Declare arrays of the character that we need in out password.
@@ -81,8 +78,7 @@ def numgen(length: int) -> int:
     rand_digit = random.choice(DIGITS)
     
     # Combine the character randomly selected above
-    # at this stage, the password contains only 4 characters but
-    # we want a 12-character password.
+    # at this stage, the password contains only 4 characters.
     temp_pass = rand_digit
 
     # Now that we are sure we have at least one character from each
@@ -92,9 +88,9 @@ def numgen(length: int) -> int:
     for x in range(MAX_LEN - 1):
         temp_pass = temp_pass + random.choice(COMBINED_LIST)
 
-     # Convert temporary password into array and shuffle to
-     # prevent it from having a consistent pattern
-     # where the beginning of the password is predictable.
+    # Convert temporary password into array and shuffle to
+    # prevent it from having a consistent pattern
+    # where the beginning of the password is predictable.
         temp_pass_list = array.array('u', temp_pass)
         random.shuffle(temp_pass_list)
 
@@ -104,4 +100,4 @@ def numgen(length: int) -> int:
     for x in temp_pass_list:
         password = password + x
         
-    return int("0x" + password, 16)
+    return password
