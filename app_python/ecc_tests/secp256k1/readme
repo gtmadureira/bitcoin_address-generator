@@ -1,0 +1,8 @@
+Usage on Linux/OS X:
+
+    $ python3 secp256k1.py
+
+
+Usage on Windows:
+
+    $ python secp256k1.py
