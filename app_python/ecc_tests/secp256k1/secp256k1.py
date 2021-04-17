@@ -6,8 +6,9 @@
 import os
 import sys
 import base64
-from randpass import passgen
+import hashlib
 import argon2 # Need to install the Argon2 package '$ pip install argon2-cffi'.
+from randpass import passgen
 
 # Checking the type of operating system.
 if sys.platform == "linux" or sys.platform == "linux2" or sys.platform == "darwin":
@@ -56,17 +57,19 @@ print()
 print(' {}{}{}{}'.format('\033[94m\033[5m', '[➭]', '\033[0m', ' Please! Enter information, like any transaction or message:'))
 print('      {}{}{}{}{}'.format("(to end data entry, on a new line type '", '\033[93m\033[5m', ':wq', '\033[0m', "' and press Enter)"))
 print()
-msg_tx = ["\t:BEGIN_MSG/TX:\n"]
-msg_tx_file = [":BEGIN_MSG/TX:\n"]
+msg_tx = ["\t1 :BEGIN_MSG/TX:\n"]
+msg_tx_file = ["1 :BEGIN_MSG/TX:\n"]
+linenumber = 2
 while True:
     line = input()
     if line == ":wq":
+        msg_tx.append("\t" + str(linenumber) +" :END_MSG/TX:")        
+        msg_tx_file.append(str(linenumber) + " :END_MSG/TX:")
         break
     else:
-        msg_tx.append('\t ' + line + '\n')
-        msg_tx_file.append(line + '\n')
-msg_tx.append("\t:END_MSG/TX:")        
-msg_tx_file.append(":END_MSG/TX:")        
+        msg_tx.append('\t' + str(linenumber) + '    ' + line + '\n')
+        msg_tx_file.append(str(linenumber) + '    ' + line + '\n')
+        linenumber += 1
 temp_file = open("__temp__", "w")
 msg_file = open("__lastmsg__", "w")
 temp_file.writelines(msg_tx)
@@ -83,12 +86,20 @@ clear()
 
 # Hashing 'Message' with Argon2(**id** mode) algorithm.
 print(' {}{}{}{}'.format('\033[94m\033[5m', '[➭]', '\033[0m', ' Almost finished! Wait, the program is running ...'))
+HashingMessage = hashlib.sha3_512(Message.encode('utf-8')).hexdigest()
+HashedMessage = HashingMessage
+HashedMSG = int("0x" + HashedMessage, 16) # Hashed messages/transactions in hexadecimal format.
+First_32Bytes_from_HashedMessage = HashedMessage[0:64]
+HashMSG_First32b = int("0x" + First_32Bytes_from_HashedMessage, 16)
+
+"""
 HashingMessage = argon2.low_level.hash_secret(Message.encode('utf-8'), RandSaltMsg.encode('utf-8'),
                                                 time_cost = timeCost, memory_cost = memoryCost, parallelism = paraLLelism,
                                                 hash_len = 32, type = argon2.low_level.Type.ID)
 HashingMessage = HashingMessage.decode("utf-8")
 HashedMessage = base64.b64decode(HashingMessage[-43:] + '=').hex()
 HashedMSG = int("0x" + HashedMessage, 16) # Hashed messages/transactions in hexadecimal format.
+"""
 
 # secp256k1 domain parameters.
 Pcurve = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F # The proven prime.
@@ -155,13 +166,13 @@ if RandPrivKey > 0 and RandPrivKey < N:
                 # This creates the message/transaction signature.
                 xRandSignPoint, yRandSignPoint = ECMultiply(Gx, Gy, RandNum)
                 r = xRandSignPoint % N
-                s = ((HashedMSG + r * RandPrivKey) * (ModInv(RandNum, N))) % N
+                s = ((HashMSG_First32b + r * RandPrivKey) * (ModInv(RandNum, N))) % N
                 Rr = '    {}{}{}'.format('\033[96m', 'r = ' + hex(r)[2:].zfill(64).upper(), '\033[0m')
                 Ss = '    {}{}{}'.format('\033[96m', 's = ' + hex(s)[2:].zfill(64).upper(), '\033[0m')
                 
                 # This verifies the signature of the message/transaction.
                 w = ModInv(s, N)
-                xu1, yu1 = ECMultiply(Gx, Gy, (HashedMSG * w) % N)
+                xu1, yu1 = ECMultiply(Gx, Gy, (HashMSG_First32b * w) % N)
                 xu2, yu2 = ECMultiply(xPublicKey, yPublicKey, (r * w) % N)
                 x, y = ECAdd(xu1, yu1, xu2, yu2)
                 if r==x:
@@ -189,7 +200,7 @@ if RandPrivKey > 0 and RandPrivKey < N:
             RandNumResult = '    {}{}{}'.format('\033[95m', '[X] Bad Number caused by Bad Hash', '\033[0m')
             
         try:
-            if ph.verify(HashingMessage, Message) == True:
+            if hashlib.sha3_512(Message.encode('utf-8')).hexdigest() == HashedMessage:
                 MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
                 MsgHashedResult = '    {}{}{}'.format('\033[96m', hex(HashedMSG)[2:].zfill(64).upper(), '\033[0m')
                 
@@ -213,7 +224,7 @@ if RandPrivKey == 0 or RandPrivKey >= N:
         NumHashResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hash', '\033[0m')
         RandNumResult = '    {}{}{}'.format('\033[95m', '[X] Bad Number caused by Bad Hash', '\033[0m')
     try:
-        if ph.verify(HashingMessage, Message) == True:
+        if hashlib.sha3_512(Message.encode('utf-8')).hexdigest() == HashedMessage:
             MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
             MsgHashedResult = '    {}{}{}'.format('\033[96m', hex(HashedMSG)[2:].zfill(64).upper(), '\033[0m')
             
@@ -245,7 +256,7 @@ if RandNum == 0 or RandNum >= N:
         prefix = "'NONE'"
         UncompPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by Bad Hash', '\033[0m')
     try:
-        if ph.verify(HashingMessage, Message) == True:
+        if hashlib.sha3_512(Message.encode('utf-8')).hexdigest() == HashedMessage:
             MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
             MsgHashedResult = '    {}{}{}'.format('\033[96m', hex(HashedMSG)[2:].zfill(64).upper(), '\033[0m')
             
@@ -268,7 +279,7 @@ if RandPrivKey == 0 or RandPrivKey >= N:
         UncompPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by invalid escalation of Private Key', '\033[0m')
         NumHashResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hash', '\033[0m')
         try:
-            if ph.verify(HashingMessage, Message) == True:
+            if hashlib.sha3_512(Message.encode('utf-8')).hexdigest() == HashedMessage:
                 MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
                 MsgHashedResult = '    {}{}{}'.format('\033[96m', hex(HashedMSG)[2:].zfill(64).upper(), '\033[0m')
                 
@@ -401,3 +412,4 @@ print('{}{}{}'.format('\033[91m', '---------------------------------------------
 print()
 print(' {}{}{}{}'.format('\033[92m\033[5m', '[✔]', '\033[0m', ' Finished!'))
 print()
+print(hex(HashMSG_First32b))
