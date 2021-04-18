@@ -1,14 +1,15 @@
-# Super simple elliptic curve presentation with signature generation and verification.
+# Elliptic curve presentation with signature generation and verification.
 # For educational purposes only.
 # Works on Python 3.6.13 or higher.
 # Source: https://github.com/gtmadureira/bitcoin_address-generator/blob/main/app_python/ecc_tests/secp256k1/secp256k1.py
 
 import os
 import sys
+import random
+import array
 import base64
 import hashlib
-import argon2 # Need to install the Argon2 package '$ pip install argon2-cffi'.
-from randpass import passgen
+import argon2 # Need to install the Argon2 package ' $ pip install argon2-cffi '.
 
 # Checking the type of operating system.
 if sys.platform == "linux" or sys.platform == "linux2" or sys.platform == "darwin":
@@ -18,22 +19,80 @@ elif sys.platform == "win32":
 
 clear()
 
+# Password generator function.
+def passgen(length: int) -> str:
+    """ Return a random password. """
+
+    # Maximum length of password needed.
+    MAX_LEN = length
+
+    # Declare arrays of the character that we need in out password.
+    # Represented as chars to enable easy string concatenation.
+    DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+    LOCASE_CHARACTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+                        'i', 'j', 'k', 'm', 'n', 'o', 'p', 'q',
+                        'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
+                        'z']
+
+    UPCASE_CHARACTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+                        'I', 'J', 'K', 'M', 'N', 'O', 'p', 'Q',
+                        'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
+                        'Z']
+
+    SYMBOLS = [' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*',
+                '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?',
+                '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~']
+
+    # Combines all the character arrays above to form one array.
+    COMBINED_LIST = DIGITS + UPCASE_CHARACTERS + LOCASE_CHARACTERS + SYMBOLS
+
+    # Randomly select at least one character from each character set above.
+    rand_digit = random.choice(DIGITS)
+    rand_upper = random.choice(UPCASE_CHARACTERS)
+    rand_lower = random.choice(LOCASE_CHARACTERS)
+    rand_symbol = random.choice(SYMBOLS)
+
+    # Combine the character randomly selected above,
+    # at this stage, the password contains only 4 characters.
+    temp_pass = rand_digit + rand_upper + rand_lower + rand_symbol
+
+    # Now that we are sure we have at least one character from each
+    # set of characters, we fill the rest of the password length by
+    # selecting randomly from the combined list of character above.
+    for x in range(MAX_LEN - 4):
+        temp_pass = temp_pass + random.choice(COMBINED_LIST)
+
+    # Convert temporary password into array and shuffle to
+    # prevent it from having a consistent pattern
+    # where the beginning of the password is predictable.
+        temp_pass_list = array.array('u', temp_pass)
+        random.shuffle(temp_pass_list)
+
+    # Traverse the temporary password array and append the chars
+    # to form the password.
+    pswd = ""
+    for x in temp_pass_list:
+        pswd = pswd + x
+        
+    return pswd
+
 print()
 print(' {}{}{}{}'.format('\033[94m\033[5m', '[➭]', '\033[0m', ' Wait, the program is running ...'))
 
 Password_Size = 1024 # Password size.
-Salt_Size = 72 # Salt size.
+Salt_Size = 128 # Salt size.
 RandPassPvK = passgen(Password_Size) # Generates a random password for the private key creation process.
 RandPassNum = passgen(Password_Size) # Generates a random password for the process of creating a number used in signature calculations.
 RandSaltPvK = passgen(Salt_Size) # Generates a random salt for the process of hashing password for private key.
 RandSaltNum = passgen(Salt_Size) # Generates a random salt for the process of hashing password for number used in signature calculations.
 
 # Configuration of the Argon2 hash function.
-timeCost = 20 # 2 is the default value.
+timeCost = 4 # 2 is the default value.
 memoryCost = 1048576 # 102400 is the default value.
-paraLLelism = 10 # 8 is the default value.
+paraLLelism = 20 # 8 is the default value.
 
-# Hashing 'RandPassPvK' with Argon2(**id** mode) algorithm, to create a random private key.
+# Hashing 'RandPassPvK' with Argon2(*id* version) algorithm, to create a random private key.
 HashingPassword = argon2.low_level.hash_secret(RandPassPvK.encode('utf-8'), RandSaltPvK.encode('utf-8'),
                                                 time_cost = timeCost, memory_cost = memoryCost, parallelism = paraLLelism,
                                                 hash_len = 32, type = argon2.low_level.Type.ID)
@@ -41,7 +100,7 @@ HashingPassword = HashingPassword.decode("utf-8")
 HashedPassword = base64.b64decode(HashingPassword[-43:] + '=').hex()
 RandPrivKey = int("0x" + HashedPassword, 16) # Random hashed private key, created in hexadecimal format.
 
-# Hashing 'RandPassNum' with Argon2(**id** mode) algorithm, to create a random number.
+# Hashing 'RandPassNum' with Argon2(*id* version) algorithm, to create a random number.
 HashingNumber = argon2.low_level.hash_secret(RandPassNum.encode('utf-8'), RandSaltNum.encode('utf-8'),
                                                 time_cost = timeCost, memory_cost = memoryCost, parallelism = paraLLelism,
                                                 hash_len = 32, type = argon2.low_level.Type.ID)
@@ -56,18 +115,18 @@ print()
 print(' {}{}{}{}'.format('\033[94m\033[5m', '[➭]', '\033[0m', ' Please! Enter information, like any transaction or message:'))
 print('      {}{}{}{}{}'.format("(to end data entry, on a new line type '", '\033[93m\033[5m', ':wq', '\033[0m', "' and press Enter)"))
 print()
-msg_tx = ["\t1: -----BEGIN MESSAGE TRANSACTION-----\n"]
-msg_tx_file = ["1: -----BEGIN MESSAGE TRANSACTION-----\n"]
+msg_tx = ["\t[1]: -----BEGIN MESSAGE/TRANSACTION-----\n"]
+msg_tx_file = ["[1]: -----BEGIN MESSAGE/TRANSACTION-----\n"]
 linenumber = 2
 while True:
     line = input()
     if line == ":wq":
-        msg_tx.append("\t" + str(linenumber) +": ------END MESSAGE TRANSACTION------")        
-        msg_tx_file.append(str(linenumber) + ": ------END MESSAGE TRANSACTION------")
+        msg_tx.append("\t[" + str(linenumber) + "]: ------END MESSAGE/TRANSACTION------")        
+        msg_tx_file.append("[" + str(linenumber) + "]: ------END MESSAGE/TRANSACTION------")
         break
     else:
-        msg_tx.append('\t' + str(linenumber) + ':    ' + line + '\n')
-        msg_tx_file.append(str(linenumber) + ':    ' + line + '\n')
+        msg_tx.append("\t[" + str(linenumber) + "]:    " + line + "\n")
+        msg_tx_file.append("[" + str(linenumber) + "]:    " + line + "\n")
         linenumber += 1
 temp_file = open("__temp__", "w")
 msg_file = open("__lastmsg__", "w")
@@ -133,6 +192,7 @@ publicKey = xPublicKey, yPublicKey
 
 # Starts the process of building and displaying (stdout) the results to the user.
 ph = argon2.PasswordHasher()
+finalResult = ' {}{}{}{}'.format('\033[92m\033[5m', '[✔]', '\033[0m', ' Finished!')
 
 # If both Private Key and Number are good.
 if RandPrivKey > 0 and RandPrivKey < N:
@@ -143,10 +203,10 @@ if RandPrivKey > 0 and RandPrivKey < N:
                 RandPrivKeyResult = '    {}{}{}'.format('\033[96m', hex(RandPrivKey)[2:].zfill(64).upper(), '\033[0m')
                 PubKeyResult = '    {}{}{}'.format('\033[96m', '04' + hex(publicKey[0])[2:].zfill(64).upper() + hex(publicKey[1])[2:].zfill(64).upper(), '\033[0m')
                 if publicKey[1] % 2 == 1: # If the Y coordinate of the Public Key is odd.
-                    prefix = "'03'"
+                    prefix = "The Y coordinate is an odd value, so prefix = 03"
                     UncompPubKeyResult = '    {}{}{}'.format('\033[96m', '03' + hex(publicKey[0])[2:].zfill(64).upper(), '\033[0m')
                 else: # If the Y coordinate of the Public Key is even.
-                    prefix = "'02'"
+                    prefix = "The Y coordinate is an even value, so prefix = 02"
                     UncompPubKeyResult = '    {}{}{}'.format('\033[96m', '02' + hex(publicKey[0])[2:].zfill(64).upper(), '\033[0m')
                 
                 # This creates the message/transaction signature.
@@ -169,12 +229,13 @@ if RandPrivKey > 0 and RandPrivKey < N:
         except Exception:
             PKHashResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hash', '\033[0m')
             RandPrivKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Private Key caused by Bad Hash', '\033[0m')
-            PubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by Bad Hash', '\033[0m')
+            PubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by Bad Private Key Hash', '\033[0m')
             prefix = "'NONE'"
-            UncompPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by Bad Hash', '\033[0m')
-            Rr = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by Bad Hash', '\033[0m')
-            Ss = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by Bad Hash', '\033[0m')
-            sigResult = '    {}{}{}'.format('\033[95m', '[X] Bad signature caused by Bad Hash', '\033[0m')
+            UncompPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by Bad Private Key Hash', '\033[0m')
+            Rr = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by Bad Private Key Hash', '\033[0m')
+            Ss = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by Bad Private Key Hash', '\033[0m')
+            sigResult = '    {}{}{}'.format('\033[95m', '[X] Bad signature caused by Bad Private Key Hash', '\033[0m')
+            finalResult = ' {}{}{}{}'.format('\033[95m\033[5m', '[X]', '\033[0m', ' Error!')
             
         try:
             if ph.verify(HashingNumber, RandPassNum) == True:
@@ -184,15 +245,22 @@ if RandPrivKey > 0 and RandPrivKey < N:
         except Exception:
             NumHashResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hash', '\033[0m')
             RandNumResult = '    {}{}{}'.format('\033[95m', '[X] Bad Number caused by Bad Hash', '\033[0m')
+            Rr = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by Bad Number Hash', '\033[0m')
+            Ss = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by Bad Number Hash', '\033[0m')
+            sigResult = '    {}{}{}'.format('\033[95m', '[X] Bad signature caused by Bad Number Hash', '\033[0m')
+            finalResult = ' {}{}{}{}'.format('\033[95m\033[5m', '[X]', '\033[0m', ' Error!')
             
-        try:
-            if hashlib.sha3_256(Message.encode('utf-8')).hexdigest() == HashingMessage:
-                MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
-                MsgHashedResult = '    {}{}{}'.format('\033[96m', hex(HashedMSG)[2:].zfill(64).upper(), '\033[0m')
+        if hashlib.sha3_256(Message.encode('utf-8')).hexdigest() == HashingMessage:
+            MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
+            MsgHashedResult = '    {}{}{}'.format('\033[96m', hex(HashedMSG)[2:].zfill(64).upper(), '\033[0m')
                 
-        except Exception:
+        else:
             MsgHashResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hash', '\033[0m')
             MsgHashedResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hashed Message caused by Bad Hash', '\033[0m')
+            Rr = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by Bad Message/Transaction Hash', '\033[0m')
+            Ss = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by Bad Message/Transaction Hash', '\033[0m')
+            sigResult = '    {}{}{}'.format('\033[95m', '[X] Bad signature caused by Bad Message/Transaction Hash', '\033[0m')
+            finalResult = ' {}{}{}{}'.format('\033[95m\033[5m', '[X]', '\033[0m', ' Error!')
 
 # If Private Key is bad.
 if RandPrivKey == 0 or RandPrivKey >= N:
@@ -209,17 +277,17 @@ if RandPrivKey == 0 or RandPrivKey >= N:
     except Exception:
         NumHashResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hash', '\033[0m')
         RandNumResult = '    {}{}{}'.format('\033[95m', '[X] Bad Number caused by Bad Hash', '\033[0m')
-    try:
-        if hashlib.sha3_256(Message.encode('utf-8')).hexdigest() == HashingMessage:
-            MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
-            MsgHashedResult = '    {}{}{}'.format('\033[96m', hex(HashedMSG)[2:].zfill(64).upper(), '\033[0m')
+    if hashlib.sha3_256(Message.encode('utf-8')).hexdigest() == HashingMessage:
+        MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
+        MsgHashedResult = '    {}{}{}'.format('\033[96m', hex(HashedMSG)[2:].zfill(64).upper(), '\033[0m')
             
-    except Exception:
+    else:
         MsgHashResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hash', '\033[0m')
         MsgHashedResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hashed Message caused by Bad Hash', '\033[0m')    
     Rr = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by invalid escalation of Private Key', '\033[0m')
     Ss = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by invalid escalation of Private Key', '\033[0m')
     sigResult = '    {}{}{}'.format('\033[95m', '[X] Bad signature caused by invalid escalation of Private Key', '\033[0m')
+    finalResult = ' {}{}{}{}'.format('\033[95m\033[5m', '[X]', '\033[0m', ' Error!')
 
 # If Number is bad.
 if RandNum == 0 or RandNum >= N:
@@ -229,10 +297,10 @@ if RandNum == 0 or RandNum >= N:
             RandPrivKeyResult = '    {}{}{}'.format('\033[96m', hex(RandPrivKey)[2:].zfill(64).upper(), '\033[0m')
             PubKeyResult = '    {}{}{}'.format('\033[96m', '04' + hex(publicKey[0])[2:].zfill(64).upper() + hex(publicKey[1])[2:].zfill(64).upper(), '\033[0m')
             if publicKey[1] % 2 == 1: # If the Y coordinate of the Public Key is odd.
-                prefix = "'03'"
+                prefix = "The Y coordinate is an odd value, so prefix = 03"
                 UncompPubKeyResult = '    {}{}{}'.format('\033[96m', '03' + hex(publicKey[0])[2:].zfill(64).upper(), '\033[0m')
             else: # If the Y coordinate of the Public Key is even.
-                prefix = "'02'"
+                prefix = "The Y coordinate is an even value, so prefix = 02"
                 UncompPubKeyResult = '    {}{}{}'.format('\033[96m', '02' + hex(publicKey[0])[2:].zfill(64).upper(), '\033[0m')
                     
     except Exception:
@@ -241,12 +309,11 @@ if RandNum == 0 or RandNum >= N:
         PubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by Bad Hash', '\033[0m')
         prefix = "'NONE'"
         UncompPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by Bad Hash', '\033[0m')
-    try:
-        if hashlib.sha3_256(Message.encode('utf-8')).hexdigest() == HashingMessage:
-            MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
-            MsgHashedResult = '    {}{}{}'.format('\033[96m', hex(HashedMSG)[2:].zfill(64).upper(), '\033[0m')
+    if hashlib.sha3_256(Message.encode('utf-8')).hexdigest() == HashingMessage:
+        MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
+        MsgHashedResult = '    {}{}{}'.format('\033[96m', hex(HashedMSG)[2:].zfill(64).upper(), '\033[0m')
             
-    except Exception:
+    else:
         MsgHashResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hash', '\033[0m')
         MsgHashedResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hashed Message caused by Bad Hash', '\033[0m')        
     NumHashResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hash', '\033[0m')
@@ -254,6 +321,7 @@ if RandNum == 0 or RandNum >= N:
     Rr = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by invalid escalation of Number', '\033[0m')
     Ss = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by invalid escalation of Number', '\033[0m')
     sigResult = '    {}{}{}'.format('\033[95m', '[X] Bad signature caused by invalid escalation of Number', '\033[0m')
+    finalResult = ' {}{}{}{}'.format('\033[95m\033[5m', '[X]', '\033[0m', ' Error!')
 
 # If both Private Key and Number are bad.    
 if RandPrivKey == 0 or RandPrivKey >= N:
@@ -264,25 +332,25 @@ if RandPrivKey == 0 or RandPrivKey >= N:
         prefix = "'NONE'"
         UncompPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by invalid escalation of Private Key', '\033[0m')
         NumHashResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hash', '\033[0m')
-        try:
-            if hashlib.sha3_256(Message.encode('utf-8')).hexdigest() == HashingMessage:
-                MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
-                MsgHashedResult = '    {}{}{}'.format('\033[96m', hex(HashedMSG)[2:].zfill(64).upper(), '\033[0m')
+        if hashlib.sha3_256(Message.encode('utf-8')).hexdigest() == HashingMessage:
+            MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
+            MsgHashedResult = '    {}{}{}'.format('\033[96m', hex(HashedMSG)[2:].zfill(64).upper(), '\033[0m')
                 
-        except Exception:
+        else:
             MsgHashResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hash', '\033[0m')
             MsgHashedResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hashed Message caused by Bad Hash', '\033[0m')
         RandNumResult = '    {}{}{}'.format('\033[95m', '[X] Bad Number caused by invalid escalation', '\033[0m')
         Rr = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by invalid escalation of Private Key and Number', '\033[0m')
         Ss = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by invalid escalation of Private Key and Number', '\033[0m')
         sigResult = '    {}{}{}'.format('\033[95m', '[X] Bad signature caused by invalid escalation of Private Key and Number', '\033[0m')
+        finalResult = ' {}{}{}{}'.format('\033[95m\033[5m', '[X]', '\033[0m', ' Error!')
 
 clear()
 
 print()
 print('{}{}{}'.format('\033[91m', '--------------------------------------------------------------------------------------------------------------------------------------------------------------', '\033[0m'))
 print()
-print("  'Password' to derive the Private Key, currently set with '" + str(Password_Size) + "' characters:")
+print("  Password to derive the Private Key, currently set with " + str(Password_Size) + " characters:")
 print()
 print('    {}{}{}'.format('\033[96m', RandPassPvK[0:128], '\033[0m'))
 print('    {}{}{}'.format('\033[96m', RandPassPvK[128:256], '\033[0m'))
@@ -294,12 +362,12 @@ print('    {}{}{}'.format('\033[96m', RandPassPvK[768:896], '\033[0m'))
 print('    {}{}{}'.format('\033[96m', RandPassPvK[896:1024], '\033[0m'))
 print()
 print()
-print("  Used Salt:")
+print("  Salt used in the hashing function:")
 print()
 print('    {}{}{}'.format('\033[96m', RandSaltPvK, '\033[0m'))
 print()
 print()
-print("  Argon2 Output in Encoded Form:")
+print("  Output with the random password hash, in encoded format (hashed by Argon2*id* version):")
 print()
 print('    {}{}{}'.format('\033[96m', HashingPassword[0:128], '\033[0m'))
 print('    {}{}{}'.format('\033[96m', HashingPassword[128:], '\033[0m'))
@@ -307,13 +375,15 @@ print()
 print(PKHashResult)
 print()
 print()
-print("  'Private Key' derived from Password above (64 characters hexadecimal [0-9A-F], hashed by Argon2\\ **id**):")
+print("  Private Key derived from the password hash above (64 characters hexadecimal [0-9A-F]):")
+print()
+print('        {}{}{}'.format('\033[93m', '[256 bits] [32 bytes] of length', '\033[0m'))
 print()
 print(RandPrivKeyResult)
 print()
 print('{}{}{}'.format('\033[91m', '--------------------------------------------------------------------------------------------------------------------------------------------------------------', '\033[0m'))
 print()
-print("  'Another Password', but now to derive the hexadecimal Number used in the signature calculations, currently set with '" + str(Password_Size) + "' characters:")
+print("  Another Password, but now to derive the hexadecimal Number used in the signature calculations, currently set with " + str(Password_Size) + " characters:")
 print()
 print('    {}{}{}'.format('\033[96m', RandPassNum[0:128], '\033[0m'))
 print('    {}{}{}'.format('\033[96m', RandPassNum[128:256], '\033[0m'))
@@ -325,12 +395,12 @@ print('    {}{}{}'.format('\033[96m', RandPassNum[768:896], '\033[0m'))
 print('    {}{}{}'.format('\033[96m', RandPassNum[896:1024], '\033[0m'))
 print()
 print()
-print("  Used Salt:")
+print("  Salt used in the hashing function:")
 print()
 print('    {}{}{}'.format('\033[96m', RandSaltNum, '\033[0m'))
 print()
 print()
-print("  Argon2 Output in Encoded Form:")
+print("  Output with the random password hash, in encoded format (hashed by Argon2*id* version):")
 print()
 print('    {}{}{}'.format('\033[96m', HashingNumber[0:128], '\033[0m'))
 print('    {}{}{}'.format('\033[96m', HashingNumber[128:], '\033[0m'))
@@ -338,33 +408,37 @@ print()
 print(NumHashResult)
 print()
 print()
-print("  'Number' used in the signature calculations, derived from last Password above (64 characters hexadecimal [0-9A-F], hashed by Argon2\\ **id**):")
+print("  Number used in the signature calculations, derived from the password hash above (64 characters hexadecimal [0-9A-F]):")
+print()
+print('        {}{}{}'.format('\033[93m', '[256 bits] [32 bytes] of length', '\033[0m'))
 print()
 print(RandNumResult)
 print()
 print('{}{}{}'.format('\033[91m', '--------------------------------------------------------------------------------------------------------------------------------------------------------------', '\033[0m'))
 print()
-print("  'Public Key' derived from 'Private Key' using 'secp256k1 elliptic curve' (uncompressed, 130 characters hexadecimal [0-9A-F]):")
+print("  Public Key derived from Private Key using secp256k1 elliptic curve (uncompressed, 130 characters hexadecimal [0-9A-F]):")
 print()
-print('        {}{}{}'.format('\033[93m', "[prefix = '04'] + [32 bytes of X coordinate] + [32 bytes of Y coordinate]", '\033[0m'))
+print('        {}{}{}'.format('\033[93m', '[prefix = 04] + [32 bytes of X coordinate] + [32 bytes of Y coordinate] = Total [520 bits] [65 bytes] of length', '\033[0m'))
 print()
 print(PubKeyResult)
 print()
 print()
-print("  'Public Key' derived from 'Private Key' using 'secp256k1 elliptic curve' (compressed, 66 characters hexadecimal [0-9A-F]):")
+print("  Public Key derived from Private Key using secp256k1 elliptic curve (compressed, 66 characters hexadecimal [0-9A-F]):")
 print()
-print('        {}{}{}'.format('\033[93m', '[prefix =' + prefix + '] + [32 bytes of X coordinate]', '\033[0m'))
+print('        {}{}{}'.format('\033[93m', '[' + prefix + '] + [32 bytes of X coordinate] = Total [264 bits] [33 bytes] of length', '\033[0m'))
 print()
 print(UncompPubKeyResult)
 print()
 print('{}{}{}'.format('\033[91m', '--------------------------------------------------------------------------------------------------------------------------------------------------------------', '\033[0m'))
 print()
-print("  'Message or Transaction':")
+print("  Message/Transaction:")
 print()
 print('{}{}{}'.format('\033[96m', screenMessage, '\033[0m'))
 print()
 print()
-print("  'Hash' of Message/Transaction above (64 characters hexadecimal [0-9A-F], hashed by SHA3-256:")
+print("  Hash of Message/Transaction above (64 characters hexadecimal [0-9A-F], hashed by SHA3-256):")
+print()
+print('        {}{}{}'.format('\033[93m', '[256 bits] [32 bytes] of length', '\033[0m'))
 print()
 print(MsgHashedResult)
 print()
@@ -385,5 +459,5 @@ print(sigResult)
 print()
 print('{}{}{}'.format('\033[91m', '--------------------------------------------------------------------------------------------------------------------------------------------------------------', '\033[0m'))
 print()
-print(' {}{}{}{}'.format('\033[92m\033[5m', '[✔]', '\033[0m', ' Finished!'))
+print(finalResult)
 print()
