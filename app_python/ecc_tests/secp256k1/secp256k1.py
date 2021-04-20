@@ -1,4 +1,4 @@
-# Elliptic curve presentation with signature generation and verification.
+# secp256k1 elliptic curve presentation with signature generation and verification.
 # For educational purposes only.
 # Works on Python 3.6.13 or higher.
 # Source: https://github.com/gtmadureira/bitcoin_address-generator/blob/main/app_python/ecc_tests/secp256k1/secp256k1.py
@@ -418,14 +418,14 @@ print('{}{}{}'.format('\033[91m', '---------------------------------------------
 print()
 print("  Public Key derived from Private Key using secp256k1 elliptic curve (uncompressed, 130 characters hexadecimal [0-9A-F]):")
 print()
-print('        {}{}{}'.format('\033[93m', '[prefix = 04] + [32 bytes of X coordinate] + [32 bytes of Y coordinate] = Total [520 bits] [65 bytes] of length', '\033[0m'))
+print('        {}{}{}'.format('\033[93m', '[prefix = 04] + [32 bytes of X coordinate] + [32 bytes of Y coordinate]', '\033[0m'))
 print()
 print(PubKeyResult)
 print()
 print()
 print("  Public Key derived from Private Key using secp256k1 elliptic curve (compressed, 66 characters hexadecimal [0-9A-F]):")
 print()
-print('        {}{}{}'.format('\033[93m', '[' + prefix + '] + [32 bytes of X coordinate] = Total [264 bits] [33 bytes] of length', '\033[0m'))
+print('        {}{}{}'.format('\033[93m', '[' + prefix + '] + [32 bytes of X coordinate]', '\033[0m'))
 print()
 print(UncompPubKeyResult)
 print()
