@@ -115,18 +115,18 @@ print()
 print(' {}{}{}{}'.format('\033[94m\033[5m', '[➭]', '\033[0m', ' Please! Enter information, like any transaction or message:'))
 print('      {}{}{}{}{}'.format("(to end data entry, on a new line type '", '\033[93m\033[5m', ':wq', '\033[0m', "' and press Enter)"))
 print()
-msg_tx = ["\t[1]: -----BEGIN MESSAGE/TRANSACTION-----\n"]
-msg_tx_file = ["[1]: -----BEGIN MESSAGE/TRANSACTION-----\n"]
+msg_tx = ["\t[000001]:  -----BEGIN MESSAGE/TRANSACTION-----\n"]
+msg_tx_file = ["[000001]:  -----BEGIN MESSAGE/TRANSACTION-----\n"]
 linenumber = 2
 while True:
     line = input()
     if line == ":wq":
-        msg_tx.append("\t[" + str(linenumber) + "]: ------END MESSAGE/TRANSACTION------")        
-        msg_tx_file.append("[" + str(linenumber) + "]: ------END MESSAGE/TRANSACTION------")
+        msg_tx.append("\t[" + str(linenumber).zfill(6) + "]:  ------END MESSAGE/TRANSACTION------")        
+        msg_tx_file.append("[" + str(linenumber).zfill(6) + "]:  ------END MESSAGE/TRANSACTION------")
         break
     else:
-        msg_tx.append("\t[" + str(linenumber) + "]:    " + line + "\n")
-        msg_tx_file.append("[" + str(linenumber) + "]:    " + line + "\n")
+        msg_tx.append("\t[" + str(linenumber).zfill(6) + "]:  " + line + "\n")
+        msg_tx_file.append("[" + str(linenumber).zfill(6) + "]:  " + line + "\n")
         linenumber += 1
 temp_file = open("__temp__", "w")
 msg_file = open("__lastmsg__", "w")
