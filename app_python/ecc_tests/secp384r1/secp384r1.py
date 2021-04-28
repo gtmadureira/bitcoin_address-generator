@@ -143,6 +143,7 @@ os.remove("__lastmsg__")
 clear()
 
 # Hashing 'Message' with SHA3-384 algorithm.
+print()
 print(' {}{}{}{}'.format('\033[94m\033[5m', '[➭]', '\033[0m', ' Almost finished! Wait, the program is running ...'))
 HashingMessage = hashlib.sha3_384(Message.encode('utf-8')).hexdigest()
 HashedMSG = int("0x" + HashingMessage, 16) # Hashed messages/transactions in hexadecimal format.
