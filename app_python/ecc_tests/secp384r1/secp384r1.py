@@ -205,10 +205,10 @@ if RandPrivKey > 0 and RandPrivKey < N:
                 PubKeyResult = '    {}{}{}'.format('\033[96m', '04' + hex(publicKey[0])[2:].zfill(96).upper() + hex(publicKey[1])[2:].zfill(96).upper(), '\033[0m')
                 if publicKey[1] % 2 == 1: # If the Y coordinate of the Public Key is odd.
                     prefix = "The Y coordinate is an odd value, so prefix = 03"
-                    UncompPubKeyResult = '    {}{}{}'.format('\033[96m', '03' + hex(publicKey[0])[2:].zfill(96).upper(), '\033[0m')
+                    compPubKeyResult = '    {}{}{}'.format('\033[96m', '03' + hex(publicKey[0])[2:].zfill(96).upper(), '\033[0m')
                 else: # If the Y coordinate of the Public Key is even.
                     prefix = "The Y coordinate is an even value, so prefix = 02"
-                    UncompPubKeyResult = '    {}{}{}'.format('\033[96m', '02' + hex(publicKey[0])[2:].zfill(96).upper(), '\033[0m')
+                    compPubKeyResult = '    {}{}{}'.format('\033[96m', '02' + hex(publicKey[0])[2:].zfill(96).upper(), '\033[0m')
                 
                 # This creates the message/transaction signature.
                 xRandSignPoint, yRandSignPoint = ECMultiply(Gx, Gy, RandNum)
@@ -232,7 +232,7 @@ if RandPrivKey > 0 and RandPrivKey < N:
             RandPrivKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Private Key caused by Bad Hash', '\033[0m')
             PubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by Bad Private Key Hash', '\033[0m')
             prefix = "'NONE'"
-            UncompPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by Bad Private Key Hash', '\033[0m')
+            compPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by Bad Private Key Hash', '\033[0m')
             Rr = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by Bad Private Key Hash', '\033[0m')
             Ss = '    {}{}{}'.format('\033[95m', '[X] Bad Value caused by Bad Private Key Hash', '\033[0m')
             sigResult = '    {}{}{}'.format('\033[95m', '[X] Bad signature caused by Bad Private Key Hash', '\033[0m')
@@ -269,7 +269,7 @@ if RandPrivKey == 0 or RandPrivKey >= N:
     RandPrivKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Private Key caused by invalid escalation', '\033[0m')
     PubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by invalid escalation of Private Key', '\033[0m')
     prefix = "'NONE'"
-    UncompPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by invalid escalation of Private Key', '\033[0m')
+    compPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by invalid escalation of Private Key', '\033[0m')
     try:
         if ph.verify(HashingNumber, RandPassNum) == True:
             NumHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
@@ -299,17 +299,17 @@ if RandNum == 0 or RandNum >= N:
             PubKeyResult = '    {}{}{}'.format('\033[96m', '04' + hex(publicKey[0])[2:].zfill(96).upper() + hex(publicKey[1])[2:].zfill(96).upper(), '\033[0m')
             if publicKey[1] % 2 == 1: # If the Y coordinate of the Public Key is odd.
                 prefix = "The Y coordinate is an odd value, so prefix = 03"
-                UncompPubKeyResult = '    {}{}{}'.format('\033[96m', '03' + hex(publicKey[0])[2:].zfill(96).upper(), '\033[0m')
+                compPubKeyResult = '    {}{}{}'.format('\033[96m', '03' + hex(publicKey[0])[2:].zfill(96).upper(), '\033[0m')
             else: # If the Y coordinate of the Public Key is even.
                 prefix = "The Y coordinate is an even value, so prefix = 02"
-                UncompPubKeyResult = '    {}{}{}'.format('\033[96m', '02' + hex(publicKey[0])[2:].zfill(96).upper(), '\033[0m')
+                compPubKeyResult = '    {}{}{}'.format('\033[96m', '02' + hex(publicKey[0])[2:].zfill(96).upper(), '\033[0m')
                     
     except Exception:
         PKHashResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hash', '\033[0m')
         RandPrivKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Private Key caused by Bad Hash', '\033[0m')
         PubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by Bad Hash', '\033[0m')
         prefix = "'NONE'"
-        UncompPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by Bad Hash', '\033[0m')
+        compPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by Bad Hash', '\033[0m')
     if hashlib.sha3_384(Message.encode('utf-8')).hexdigest() == HashingMessage:
         MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
         MsgHashedResult = '    {}{}{}'.format('\033[96m', hex(HashedMSG)[2:].zfill(96).upper(), '\033[0m')
@@ -331,7 +331,7 @@ if RandPrivKey == 0 or RandPrivKey >= N:
         RandPrivKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Private Key caused by invalid escalation', '\033[0m')
         PubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by invalid escalation of Private Key', '\033[0m')
         prefix = "'NONE'"
-        UncompPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by invalid escalation of Private Key', '\033[0m')
+        compPubKeyResult = '    {}{}{}'.format('\033[95m', '[X] Bad Public Key caused by invalid escalation of Private Key', '\033[0m')
         NumHashResult = '    {}{}{}'.format('\033[95m', '[X] Bad Hash', '\033[0m')
         if hashlib.sha3_384(Message.encode('utf-8')).hexdigest() == HashingMessage:
             MsgHashResult = '    {}{}{}'.format('\033[92m', '[✔] Good Hash', '\033[0m')
@@ -431,7 +431,7 @@ print("  Public Key derived from Private Key using secp384r1 elliptic curve (com
 print()
 print('        {}{}{}'.format('\033[93m', '[' + prefix + '] + [48 bytes of X coordinate] = Total [386 bits] [49 bytes] of length', '\033[0m'))
 print()
-print(UncompPubKeyResult)
+print(compPubKeyResult)
 print()
 print('{}{}{}'.format('\033[91m', '--------------------------------------------------------------------------------------------------------------------------------------------------------------', '\033[0m'))
 print()
