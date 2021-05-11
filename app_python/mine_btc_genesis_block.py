@@ -91,7 +91,7 @@ def print_number_of_try():
     sys.stdout.write('%s\r' % info_str)
     sys.stdout.flush()
 
-def print_solution_found(header_second_hash_big_endian_hex, TARGET):
+def print_solution_found(header_second_hash_big_endian_hex, HEIGHT):
     print("\n\n\033[92m\033[05m\033[01mMined!\033[0m")
     print("\n    HEIGHT: "+ HEIGHT)
     print("   ####################################################################################")
@@ -128,6 +128,6 @@ while not is_solution_found:
     if not is_solution_found:
         number_of_try = number_of_try + 1
     else:
-        print_solution_found(header_second_hash_big_endian_hex, TARGET)
+        print_solution_found(header_second_hash_big_endian_hex, HEIGHT)
         print_header(little(version), little(prev_block), little(merkle_root),
         datetime.fromtimestamp(int("0x" + little(timestamp), 16), timezone.utc), int("0x" + little(timestamp), 16), little(size_bits), little(nonce))
