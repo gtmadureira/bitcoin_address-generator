@@ -23,11 +23,10 @@ TARGET        = "00000000ffff000000000000000000000000000000000000000000000000000
 
 number_of_try = 0
 
-# Checking the type of operating system.
 if sys.platform == "linux" or sys.platform == "linux2" or sys.platform == "darwin":
-    def clear(): os.system('clear') # On Linux/OS X system.
+    def clear(): os.system('clear')
 elif sys.platform == "win32":
-    def clear(): os.system('cls') # On Windows system.
+    def clear(): os.system('cls')
 
 clear()
 
@@ -96,7 +95,6 @@ def print_solution_found(header_second_hash_big_endian_hex, TARGET):
     print("\n\n\033[92m\033[05m\033[01mMined!\033[0m")
     print("\n    HEIGHT: "+ HEIGHT)
     print("   ####################################################################################")
-    # print('!!! We found a perfect header combination !!!')
     print("   #\033[92m\033[01m         " + header_second_hash_big_endian_hex + "         \033[0m#")
     print("##########################################################################################")
 
