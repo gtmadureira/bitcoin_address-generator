@@ -19,12 +19,17 @@ Created by:
 
 
 from enum import Enum
-from typing import Union
 from platform import system
 from hmac import new as hmac
 from secrets import randbits
+from typing import List, Tuple, Union
 from subprocess import check_call as run_command
 from hashlib import pbkdf2_hmac, sha256, sha3_512
+
+
+# Type hints.
+Markle_Tuple = Tuple[int, bytes]
+Markle_List = List[Tuple[int, bytes], ]
 
 
 # Tests the operating system type and sets the screen clear command.
@@ -190,22 +195,64 @@ def has_even_y(P: tuple) -> bool:
     return y(P) % 2 == 0
 
 
-def taproot_tweak_public_key(internal_public_key: str,
-                             merkle_script_tree: str = "") -> tuple:
+def ser_script(script: bytes) -> bytes:
+    """Prefixes its input with a CompactSize-encoded length."""
+    return bytes([len(script)]) + script
+
+
+def taproot_tweak_public_key(internal_public_key: bytes, h: bytes) -> tuple:
     """
     Public key tweaking procedure, returning the output public key.
     """
-    t = int_from_bytes(tagged_hash("TapTweak",
-                                   bytes.fromhex(internal_public_key) +
-                                   bytes.fromhex(merkle_script_tree)))
+    t = int_from_bytes(tagged_hash("TapTweak", internal_public_key + h))
     if not 0 < t < _N_CURVE:
-        return (None, False)
-    p = lift_x(bytes.fromhex(internal_public_key))
+        return (None, bytes())
+    p = lift_x(internal_public_key)
     q = ec_point_multiplication(_GX_CURVE, _GY_CURVE, t)
     px, py = p
     qx, qy = q
     Q = ec_point_addition(px, py, qx, qy)
-    return 0 if has_even_y(Q) else 1, bytes_from_int(x(Q)).hex().zfill(64)
+    return 0 if has_even_y(Q) else 1, bytes_from_int(x(Q))
+
+
+def taproot_tree_helper(merkle_script_tree:
+                        Union[Markle_Tuple, Markle_List]) -> tuple:
+    """Merkle script tree builder."""
+    if isinstance(merkle_script_tree, tuple):
+        leaf_version, script = merkle_script_tree
+        h = tagged_hash("TapLeaf", bytes([leaf_version]) + ser_script(script))
+        return ([((leaf_version, script), bytes())], h)
+    left, left_h = taproot_tree_helper(merkle_script_tree[0])
+    right, right_h = taproot_tree_helper(merkle_script_tree[1])
+    ret = [(l, c + right_h) for l, c in left] + \
+        [(l, c + left_h) for l, c in right]  # noqa: E741
+    if right_h < left_h:
+        left_h, right_h = right_h, left_h
+    return (ret, tagged_hash("TapBranch", left_h + right_h))
+
+
+def taproot_output_script(internal_public_key: str, merkle_script_tree:
+                          Union[Markle_Tuple, Markle_List, None]) -> bytes:
+    """
+    Given a internal public key and a Merkle script tree, compute the
+    output script.
+
+    Merkle script tree is either:
+     - a (leaf_version, script) tuple (leaf_version is 0xc0 for
+     [[bip-0342.mediawiki|BIP342]] scripts).
+     - a list of two elements, each with the same structure as Merkle
+     script tree itself.
+     - None.
+    """
+    if merkle_script_tree is None:
+        h = bytes()
+    else:
+        _, h = taproot_tree_helper(merkle_script_tree)
+    _, output_pubkey = taproot_tweak_public_key(
+        bytes.fromhex(internal_public_key), h)
+    if not output_pubkey:
+        return output_pubkey
+    return bytes([0x51, 0x20]) + output_pubkey
 
 
 # Alphabet used for base58 encoding.
@@ -427,21 +474,26 @@ if __name__ == "__main__":
         private_key_wif = private_key_to_wif(private_key)
         public_key = get_public_key_from_private_key(private_key)
         internal_public_key = public_key[2:]
-        output_public_key = taproot_tweak_public_key(internal_public_key)[1]
-        if not output_public_key:
+        markle_script_tree = None
+        script_public_key = taproot_output_script(
+            internal_public_key, markle_script_tree).hex()
+        if not script_public_key:
             continue
         break
+    output_public_key = script_public_key[4:]
     address = public_key_to_address(output_public_key)
     data = (private_key.upper(),
             private_key_wif,
             public_key.upper(),
             internal_public_key.upper(),
+            script_public_key.upper(),
             output_public_key.upper(),
             address)
-print("\n\t              Private Key Hexadecimal: " + data[0] +
-      "\n\t Private Key Compressed WIF @ MainNet: \033[92m" + data[1] +
-      "\033[0m\n\t                Compressed Public Key: " + data[2] +
-      "\n\t                  Internal Public Key: " + data[3] +
-      "\n\t                    Output Public Key: " + data[4] +
-      "\n\t               P2TR Address @ MainNet: \033[92m" + data[5] +
-      "\033[0m\n")
+    print("\n\t              Private Key Hexadecimal: " + data[0] +
+          "\n\t Private Key Compressed WIF @ MainNet: \033[92m" + data[1] +
+          "\033[0m\n\t                Compressed Public Key: " + data[2] +
+          "\n\t                  Internal Public Key: " + data[3] +
+          "\n\t                    Script Public Key: " + data[4] +
+          "\n\t                    Output Public Key: " + data[5] +
+          "\n\t               P2TR Address @ MainNet: \033[92m" + data[6] +
+          "\033[0m\n")
